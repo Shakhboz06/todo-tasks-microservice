@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.json",
+   "compilerOptions": {
+    "target": "ES2022",
+    "outDir": "./dist",
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "test", "dist", "**/*spec.ts", "**/*.e2e-spec.ts", "test/**/*"]
+}

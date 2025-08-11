@@ -1,0 +1,61 @@
+# deps
+node_modules/
+**/node_modules/
+
+# builds
+dist/
+**/dist/
+build/
+**/build/
+
+# logs
+logs/
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# OS
+.DS_Store
+
+# tests
+coverage/
+.nyc_output/
+
+# IDEs
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# env (never commit)
+.env
+.env.*
+**/.env
+**/.env.*
+
+# temp
+.temp/
+.tmp/
+
+# runtime
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# node report files
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+

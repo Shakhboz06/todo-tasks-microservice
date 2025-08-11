@@ -1,0 +1,63 @@
+services:
+  user-db:
+    image: postgres:17
+    container_name: user-db
+    environment:
+      POSTGRES_DB: users
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpass
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - app-network
+  todo-db:
+    image: postgres:17
+    container_name: todo-db
+    environment:
+      POSTGRES_DB: tasks
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secretpass
+    volumes:
+      - todo-db-data:/var/lib/postgresql/data
+    ports:
+      - "5433:5432"
+    networks:
+      - app-network
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/user.dockerfile
+    container_name: user-service
+    env_file:
+      - services/user-service/.env
+    ports:
+      - "3001:3001"
+    depends_on: 
+     - user-db
+    networks:
+      - app-network
+
+  todo-service:
+    build:
+      context: .
+      dockerfile: services/todo-service/todo.dockerfile
+    container_name: todo-service
+    env_file:
+      - services/todo-service/.env
+    ports:
+      - "3002:3002"
+    depends_on:
+      - todo-db
+    networks:
+      - app-network
+volumes:
+  user-db-data:
+    driver: local
+  todo-db-data:
+    driver: local
+
+networks:
+  app-network:
+    driver: bridge

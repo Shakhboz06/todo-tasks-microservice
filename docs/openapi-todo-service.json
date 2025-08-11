@@ -1,0 +1,230 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/todos": {
+            "post": {
+                "operationId": "TodosController_create",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateTodoDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Todo task created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "taskId": "todo id-here",
+                                        "content": "Buy milk",
+                                        "userId": "user-uuid",
+                                        "createdAt": "2025-01-01 00:00:00.000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "summary": "Create a new todo task",
+                "tags": [
+                    "todo tasks"
+                ]
+            },
+            "get": {
+                "operationId": "TodosController_findAll",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": "Todo tasks retrieved successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": [
+                                        {
+                                            "taskId": "task-id-here",
+                                            "content": "Buy milk",
+                                            "userId": "user-uuid",
+                                            "createdAt": "2025-01-01 00:00:00.000",
+                                            "updatedAt": "2025-01-01 00:00:00.000"
+                                        }
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid token"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "summary": "Retrive all todo tasks for the authenticated user",
+                "tags": [
+                    "todo tasks"
+                ]
+            }
+        },
+        "/todos/{taskId}": {
+            "put": {
+                "operationId": "TodosController_update",
+                "parameters": [
+                    {
+                        "name": "taskId",
+                        "required": true,
+                        "in": "path",
+                        "description": "Todo task taskId",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateTodoDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Todo task updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "id": "task-id-here",
+                                        "content": "Buy milk and bread",
+                                        "userId": "user-uuid",
+                                        "createdAt": "2025-01-01 00:00:00.000",
+                                        "updatedAt": "2025-01-01 00:00:00.000"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid token"
+                    },
+                    "404": {
+                        "description": "Todo task not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "summary": "Update a todo task by taskId",
+                "tags": [
+                    "todo tasks"
+                ]
+            },
+            "delete": {
+                "operationId": "TodosController_delete",
+                "parameters": [
+                    {
+                        "name": "taskId",
+                        "required": true,
+                        "in": "path",
+                        "description": "Todo task of taskId",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Todo task deleted successfully"
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid token"
+                    },
+                    "404": {
+                        "description": "Todo task not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ],
+                "summary": "Delete a todo task by taskId",
+                "tags": [
+                    "todo tasks"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Todo Service API",
+        "description": "REST API for user tasks, view, post, update, and delete",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "type": "http"
+            }
+        },
+        "schemas": {
+            "CreateTodoDto": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "example": "Buy milk",
+                        "description": "Todo content"
+                    }
+                },
+                "required": [
+                    "content"
+                ]
+            },
+            "UpdateTodoDto": {
+                "type": "object",
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "example": "Buy groceries and cook dinner",
+                        "description": "the new content to update todo value"
+                    }
+                },
+                "required": [
+                    "content"
+                ]
+            }
+        }
+    }
+}

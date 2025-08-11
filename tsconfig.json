@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "noUnusedLocals": true,
+    "pretty": true,
+    "esModuleInterop": true,
+    "lib": [
+      "esnext"
+    ],
+    "baseUrl": "./",
+    "paths": {
+      "defaultLibraryPrefix/common": [
+        "libs/common/src"
+      ],
+      "defaultLibraryPrefix/common/*": [
+        "libs/common/src/*"
+      ]
+    }
+  },
+}

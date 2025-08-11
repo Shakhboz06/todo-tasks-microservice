@@ -1,0 +1,156 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/auth/register": {
+            "post": {
+                "description": "Create a new user account with email and password",
+                "operationId": "AuthController_register",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RegisterDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "success": true,
+                                        "data": {
+                                            "user_id": "uuid-here",
+                                            "user_email": "user@example.com",
+                                            "createdAt": "2025-01-01 00:00:00.000"
+                                        },
+                                        "message": "User registered successfully!"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - validation failed or user already exists"
+                    },
+                    "409": {
+                        "description": "Conflict - email already registered"
+                    }
+                },
+                "summary": "Register a new user",
+                "tags": [
+                    "auth"
+                ]
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "description": "Authenticate user and return JWT token",
+                "operationId": "AuthController_login",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/LoginDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User logged in successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "example": {
+                                        "success": true,
+                                        "data": {
+                                            "access_token": "ssfsfgfgGgghgciOfgfgIFfgfgUzI1NiIsInR5cCI6IkpXVCJ9..."
+                                        },
+                                        "message": "User signed in successfully"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request - validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthorized - invalid credentials"
+                    }
+                },
+                "summary": "Login user",
+                "tags": [
+                    "auth"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "User Service API",
+        "description": "REST API for user registration, login, and authentication",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [],
+    "servers": [],
+    "components": {
+        "securitySchemes": {
+            "bearer": {
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "type": "http"
+            }
+        },
+        "schemas": {
+            "RegisterDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "test@example.com",
+                        "description": "Unique email address"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123",
+                        "description": "original user password will be hashed(minimum 6 characters mandatory)",
+                        "minLength": 6
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            },
+            "LoginDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "any@example.com",
+                        "description": "Previusly registered email"
+                    },
+                    "password": {
+                        "type": "string",
+                        "example": "password123",
+                        "description": "User password(minimum 6 characters mandatory)",
+                        "minLength": 6
+                    }
+                },
+                "required": [
+                    "email",
+                    "password"
+                ]
+            }
+        }
+    }
+}
