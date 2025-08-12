@@ -14,7 +14,7 @@ import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 			isGlobal: true,
 			envFilePath: ".env",
 			validationSchema: Joi.object({
-				DATABASE_URL: Joi.string().uri().required(),
+				DATABASE_USER_URL: Joi.string().uri().required(),
 				JWT_SECRET: Joi.string().min(16).required(),
 				JWT_EXPIRES_IN: Joi.string().default("900s"),
 				PORT: Joi.number().default(3001),

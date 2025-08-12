@@ -155,16 +155,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": "DATABASE_TASKS_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel tasks {\n  /// Auto-incrementing numeric PK\n  id Int @id @default(autoincrement())\n\n  /// Unique todo identifier\n  uuid String @unique @default(uuid())\n\n  /// Unique todo identifier\n  content String\n\n  /// Foreign key to users.uuid\n  user_uuid String\n\n  /// When this row was created\n  createdAt DateTime @default(now())\n\n  /// When this row was last updated\n  updatedAt DateTime @updatedAt\n}\n",
-  "inlineSchemaHash": "330333ce9f81424fb4499553c8295805fbadd8de2c63dd6bae13af1400b694cf",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_TASKS_URL\")\n}\n\nmodel tasks {\n  /// Auto-incrementing numeric PK\n  id Int @id @default(autoincrement())\n\n  /// Unique todo identifier\n  uuid String @unique @default(uuid())\n\n  /// Unique todo identifier\n  content String\n\n  /// Foreign key to users.uuid\n  user_uuid String\n\n  /// When this row was created\n  createdAt DateTime @default(now())\n\n  /// When this row was last updated\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchemaHash": "03da492ab6dbec4b04ba48a721e91c41233e9864dfc944672b539098aca6e0cf",
   "copyEngine": true
 }
 

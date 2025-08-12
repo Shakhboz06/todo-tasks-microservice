@@ -2,22 +2,44 @@
 @plugin "@tailwindcss/forms";
 
 /* Layout helpers */
-.container-narrow { @apply max-w-xl  mx-auto px-4; }
-.container-wide   { @apply max-w-5xl mx-auto px-4; } /* NEW: wider page container */
-.card { @apply bg-white border border-gray-200 rounded-2xl shadow-sm p-6; }
+.container-narrow {
+	@apply max-w-xl  mx-auto px-4;
+}
+.container-wide {
+	@apply max-w-5xl mx-auto px-4;
+} /* NEW: wider page container */
+.card {
+	@apply bg-white border border-gray-200 rounded-2xl shadow-sm p-6;
+}
 
 /* Typography */
-.h2 { @apply text-2xl font-semibold tracking-tight text-gray-900 text-center; }
-.muted { @apply text-sm text-gray-500; }
+.h2 {
+	@apply text-2xl font-semibold tracking-tight text-gray-900 text-center;
+}
+.muted {
+	@apply text-sm text-gray-500;
+}
 
 /* Buttons */
-.btn { @apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2 transition
-               bg-blue-600 text-white hover:bg-blue-700 active:translate-y-px; }
-.btn:disabled { @apply opacity-60 cursor-not-allowed; }
+.btn {
+	@apply inline-flex items-center justify-center font-semibold rounded-xl px-4 py-2 transition
+               bg-blue-600 text-white hover:bg-blue-700 active:translate-y-px;
+}
+.btn:disabled {
+	@apply opacity-60 cursor-not-allowed;
+}
 
 /* Inputs */
-.input { @apply w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500; }
+.input {
+	@apply w-full rounded-xl border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+}
 
 /* Layout reset */
-html, body, #app { height: 100%; }
-body { @apply overflow-x-hidden bg-gray-50 text-gray-900; }
+html,
+body,
+#app {
+	height: 100%;
+}
+body {
+	@apply overflow-x-hidden bg-gray-50 text-gray-900;
+}

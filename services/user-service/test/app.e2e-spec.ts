@@ -18,7 +18,7 @@ describe("App bootstrap (e2e)", () => {
 					ignoreEnvFile: true,
 					load: [
 						() => ({
-							DATABASE_URL: "postgres://in-memory-fake-not-used",
+							DATABASE_USER_URL: "postgres://in-memory-fake-not-used",
 							JWT_SECRET: "test-secret-key-for-testing-only-min-32-chars",
 							JWT_EXPIRES_IN: "15m",
 							PORT: 0,

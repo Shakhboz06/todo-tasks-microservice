@@ -157,16 +157,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": "DATABASE_URL",
+        "fromEnvVar": "DATABASE_USER_URL",
         "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"linux-musl-openssl-3.0.x\"]\n  output        = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel users {\n  /// Auto‐incrementing numeric PK\n  id        Int      @id @default(autoincrement())\n  /// Unique UUID identifier\n  uuid      String   @unique @default(uuid())\n  userEmail String   @unique @map(\"user_email\")\n  userPwd   String   @map(\"user_pwd\")\n  createdAt DateTime @default(now())\n}\n",
-  "inlineSchemaHash": "610d97dfcca28379ba6a3b51965aa93f1531b73630fc936baa9fececa673f0f8",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider      = \"prisma-client-js\"\n  binaryTargets = [\"native\", \"linux-musl-openssl-3.0.x\"]\n  output        = \"../src/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_USER_URL\")\n}\n\nmodel users {\n  /// Auto‐incrementing numeric PK\n  id        Int      @id @default(autoincrement())\n  /// Unique UUID identifier\n  uuid      String   @unique @default(uuid())\n  userEmail String   @unique @map(\"user_email\")\n  userPwd   String   @map(\"user_pwd\")\n  createdAt DateTime @default(now())\n}\n",
+  "inlineSchemaHash": "012972695fde5c5c75040bdf8513a70c277fa88edc4b52bc0e02dae96b88a856",
   "copyEngine": true
 }
 config.dirname = '/'
@@ -178,7 +179,7 @@ config.compilerWasm = undefined
 
 config.injectableEdgeEnv = () => ({
   parsed: {
-    DATABASE_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_URL || undefined
+    DATABASE_USER_URL: typeof globalThis !== 'undefined' && globalThis['DATABASE_USER_URL'] || typeof process !== 'undefined' && process.env && process.env.DATABASE_USER_URL || undefined
   }
 })
 

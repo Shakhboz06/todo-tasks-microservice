@@ -8,6 +8,24 @@
       "compilerOptions": {
         "tsConfigPath": "libs/common/tsconfig.lib.json"
       }
+    },
+    "user-service": {
+      "type": "application",
+      "root": "services/user-service",
+      "entryFile": "main",
+      "sourceRoot": "services/user-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "services/user-service/tsconfig.build.json"
+      }
+    },
+    "todo-service": {
+      "type": "application",
+      "root": "services/todo-service",
+      "entryFile": "main",
+      "sourceRoot": "services/todo-service/src",
+      "compilerOptions": {
+        "tsConfigPath": "services/todo-service/tsconfig.build.json"
+      }
     }
   },
   "compilerOptions": {

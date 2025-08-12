@@ -1,11 +1,14 @@
-// test/auth.e2e-spec.ts
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
-import request from "supertest";
-import { AppModule } from "../src/app.module";
 import { ConfigModule } from "@nestjs/config";
+import request from "supertest";
 import { PrismaService } from "../src/prisma/prisma.service";
 import { PrismaFake } from "./prisma.fake";
+
+
+import { AuthController } from "../src/auth/auth.controller";
+import { AuthService } from "../src/auth/auth.service";
+import { JwtModule } from "@backendrestapi/jwt";
 
 describe("Auth e2e", () => {
 	let app: INestApplication;
@@ -14,19 +17,24 @@ describe("Auth e2e", () => {
 	beforeAll(async () => {
 		const moduleRef = await Test.createTestingModule({
 			imports: [
-				AppModule,
 				ConfigModule.forRoot({
 					isGlobal: true,
 					ignoreEnvFile: true,
 					load: [
 						() => ({
-							DATABASE_URL: "postgres://in-memory-fake-not-used",
-							JWT_SECRET: "test-secret-key-for-testing-only-min-32-chars",
+							DATABASE_USER_URL: "postgres://in-memory-fake",
+							JWT_SECRET: "test-secret-key-for-testing-only",
 							JWT_EXPIRES_IN: "15m",
 							PORT: 0,
 						}),
 					],
 				}),
+				JwtModule.register(),
+			],
+			controllers: [AuthController],
+			providers: [
+				AuthService, 
+				PrismaService,
 			],
 		})
 			.overrideProvider(PrismaService)
@@ -49,7 +57,6 @@ describe("Auth e2e", () => {
 	});
 
 	beforeEach(() => {
-		// isolate state per test
 		prismaFake.cleanDatabase();
 	});
 
@@ -69,17 +76,13 @@ describe("Auth e2e", () => {
 				.send(validUser)
 				.expect(201);
 
-			// Debug if needed
-			// console.log('Register response:', JSON.stringify(res.body, null, 2));
-
-			// shape produced by your controller/service (based on your logs)
 			expect(res.body).toEqual(
 				expect.objectContaining({
 					success: true,
 					data: expect.objectContaining({
-						user_id: expect.any(String), // uuid
+						user_id: expect.any(String),
 						user_email: validUser.email,
-						createdAt: expect.any(String), // ISO string
+						createdAt: expect.any(String),
 					}),
 					message: "User registered successfully!",
 				}),
@@ -97,7 +100,6 @@ describe("Auth e2e", () => {
 				.send(validUser)
 				.expect(409);
 
-			// accept either your explicit error or a message containing 'already'
 			expect(res.body).toEqual(
 				expect.objectContaining({
 					message: expect.stringMatching(/already/i),
@@ -111,7 +113,6 @@ describe("Auth e2e", () => {
 				.send({ email: "not-an-email", password: "StrongPass123!" })
 				.expect(400);
 
-			// matches Nest ValidationPipe default error shape
 			expect(res.body).toEqual(
 				expect.objectContaining({
 					statusCode: 400,
@@ -126,10 +127,9 @@ describe("Auth e2e", () => {
 		it("validates password requirements", async () => {
 			const res = await request(app.getHttpServer())
 				.post("/auth/register")
-				.send({ email: "ok@example.com", password: "123" }) // intentionally weak
+				.send({ email: "ok@example.com", password: "123" })
 				.expect(400);
 
-			// Allow any validation message array that includes "password" complaint
 			expect(res.body).toEqual(
 				expect.objectContaining({
 					statusCode: 400,
@@ -158,7 +158,6 @@ describe("Auth e2e", () => {
 		};
 
 		beforeEach(async () => {
-			// Arrange: register user
 			const registerRes = await request(app.getHttpServer())
 				.post("/auth/register")
 				.send(testUser)
@@ -172,8 +171,6 @@ describe("Auth e2e", () => {
 				.send(testUser)
 				.expect(200);
 
-			// console.log("Login response:", JSON.stringify(res.body, null, 2));
-
 			expect(res.body).toEqual(
 				expect.objectContaining({
 					success: true,
@@ -184,7 +181,6 @@ describe("Auth e2e", () => {
 				}),
 			);
 
-			// Basic JWT shape check
 			expect(res.body.data.access_token).toMatch(
 				/^[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+$/,
 			);
@@ -209,15 +205,21 @@ describe("Auth e2e", () => {
 				.expect(401);
 		});
 
-		it("validates required fields", async () => {
-			await request(app.getHttpServer())
-				.post("/auth/login")
-				.send({ email: testUser.email })
-				.expect(400);
+		it("validates missing email", async () => {
 			await request(app.getHttpServer())
 				.post("/auth/login")
 				.send({ password: testUser.password })
 				.expect(400);
+		});
+
+		it("validates missing password", async () => {
+			await request(app.getHttpServer())
+				.post("/auth/login")
+				.send({ email: testUser.email })
+				.expect(400);
+		});
+
+		it("validates invalid email format", async () => {
 			await request(app.getHttpServer())
 				.post("/auth/login")
 				.send({ email: "not-an-email", password: testUser.password })

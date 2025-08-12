@@ -44,6 +44,6 @@ jobs:
 
       - name: Run tests
         env:
-          DATABASE_URL: postgresql://testuser:testpass@localhost:5432/testdb
+          DATABASE_USER_URL: postgresql://testuser:testpass@localhost:5432/testdb
           JWT_SECRET: test_secret
         run: npm run test
