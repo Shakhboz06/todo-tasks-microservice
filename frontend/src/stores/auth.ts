@@ -29,9 +29,7 @@ export const useAuthStore = defineStore("auth", {
 	},
 	actions: {
 		async register(email: string, password: string) {
-			// User registers; DO NOT auto-login (per your requirement)
 			await authApi.post("/auth/register", { email, password });
-			// user will manually log in next
 		},
 		async login(email: string, password: string) {
 			const { access_token } = await authApi.post<{ access_token: string }>(

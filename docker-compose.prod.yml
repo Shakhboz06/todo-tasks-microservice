@@ -1,0 +1,50 @@
+version: "3.9"
+
+services:
+  user-service:
+    build:
+      context: .
+      dockerfile: services/user-service/user.dockerfile
+    container_name: user-service
+    env_file: [.env.compose]
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+    expose:                 
+      - "3001"
+    restart: unless-stopped
+
+  todo-service:
+    build:
+      context: .
+      dockerfile: services/todo-service/todo.dockerfile
+    container_name: todo-service
+    env_file: [.env.compose]
+    environment:
+      NODE_ENV: production
+      PORT: 3002
+    expose:                
+      - "3002"
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: caddy-proxy
+    ports:
+      - "80:80"             
+      - "443:443"          
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    restart: unless-stopped
+    depends_on:
+      - user-service
+      - todo-service
+    logging:
+      driver: "json-file"
+      options: { max-size: "10m", max-file: "3" }
+
+volumes:
+  caddy_data:
+  caddy_config:

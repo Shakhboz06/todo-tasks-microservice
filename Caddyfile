@@ -1,0 +1,50 @@
+{
+    email daniel.brook29@gmail.com
+}
+
+(static) {
+    @static {
+        file
+        path *.ico *.css *.js *.gif *.jpg *.jpeg *.png *.svg *.woff *.json
+    }
+    header @static Cache-Control max-age=5184000
+}
+
+(security) {
+    header {
+        
+        Strict-Transport-Security max-age=31536000;
+        X-Content-Type-Options nosniff
+        Referrer-Policy no-referrer-when-downgrade
+        
+        # CORS headers - Allow all origins for now, we'll restrict later
+        Access-Control-Allow-Origin *
+        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
+        Access-Control-Allow-Headers "Content-Type, Authorization"
+        Access-Control-Allow-Credentials true
+    }
+}
+
+mytodotasks.duckdns.org {
+    encode zstd gzip
+    import security
+    
+    @cors_preflight method OPTIONS
+    respond @cors_preflight 200
+    
+
+    handle /auth* {
+        reverse_proxy user-service:3001
+    }
+    
+
+    handle /todos* {
+        reverse_proxy todo-service:3002
+    }
+    
+    
+    
+    handle {
+        respond "Microservices API Ready" 200
+    }
+}

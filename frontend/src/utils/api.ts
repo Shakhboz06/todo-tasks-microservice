@@ -1,4 +1,3 @@
-// src/utils/api.ts
 import { useAuthStore } from "../stores/auth";
 
 function makeClient(base: string) {
@@ -48,5 +47,5 @@ function makeClient(base: string) {
 }
 
 // two clients: Auth (3001) and Todos (3002)
-export const authApi = makeClient(import.meta.env.VITE_AUTH_BASE_URL || "");
-export const todosApi = makeClient(import.meta.env.VITE_TODOS_BASE_URL || "");
+export const authApi = makeClient(import.meta.env.VITE_AUTH_BASE_URL ||  "https://mytodotasks.duckdns.org");
+export const todosApi = makeClient(import.meta.env.VITE_TODOS_BASE_URL ||"https://mytodotasks.duckdns.org");
