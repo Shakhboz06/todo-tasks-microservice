@@ -5,7 +5,6 @@ import request from "supertest";
 import { PrismaService } from "../src/prisma/prisma.service";
 import { PrismaFake } from "./prisma.fake";
 
-
 import { AuthController } from "../src/auth/auth.controller";
 import { AuthService } from "../src/auth/auth.service";
 import { JwtModule } from "@backendrestapi/jwt";
@@ -32,10 +31,7 @@ describe("Auth e2e", () => {
 				JwtModule.register(),
 			],
 			controllers: [AuthController],
-			providers: [
-				AuthService, 
-				PrismaService,
-			],
+			providers: [AuthService, PrismaService],
 		})
 			.overrideProvider(PrismaService)
 			.useClass(PrismaFake)

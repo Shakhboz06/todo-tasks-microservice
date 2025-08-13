@@ -17,7 +17,6 @@ function buildCorsOptions() {
 			origin: string | undefined,
 			callback: (err: Error | null, allowed?: boolean) => void,
 		) => {
-			// allow non-browser calls / same-origin / tests
 			if (!origin) return callback(null, true);
 			if (allowlist.has(origin)) return callback(null, true);
 			return callback(new Error(`CORS: Origin not allowed: ${origin}`));

@@ -17,14 +17,13 @@ function buildCorsOptions() {
 			origin: string | undefined,
 			callback: (err: Error | null, allowed?: boolean) => void,
 		) => {
-			// allow non-browser calls / same-origin / tests
 			if (!origin) return callback(null, true);
 			if (allowlist.has(origin)) return callback(null, true);
 			return callback(new Error(`CORS: Origin not allowed: ${origin}`));
 		},
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: false, // token in header; no cookies
+		credentials: false,
 		preflightContinue: false,
 		optionsSuccessStatus: 204,
 	} as const;
@@ -35,12 +34,10 @@ async function bootstrap() {
 
 	app.use(
 		helmet({
-			// default is fine for APIs; tweak CSP only if you add HTML pages
 			crossOriginResourcePolicy: { policy: "cross-origin" },
 		}),
 	);
 
-	// CORS
 	app.enableCors(buildCorsOptions());
 
 	app.useGlobalPipes(

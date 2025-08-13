@@ -1,4 +1,3 @@
-// test/todos.e2e-spec.ts
 import { Test } from "@nestjs/testing";
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import request from "supertest";
@@ -79,9 +78,8 @@ describe("Todos e2e (todo-service)", () => {
 			const u2 = await (prismaFake as any).users.create({
 				data: { email: "user2@example.com" },
 			});
-			// @ts-ignore mutate for tests
+
 			u1.uuid = userUuid;
-			// @ts-ignore mutate for tests
 			u2.uuid = otherUuid;
 		}
 	});
@@ -137,7 +135,7 @@ describe("Todos e2e (todo-service)", () => {
 			expect(list.body.data.tasks).toEqual(
 				expect.arrayContaining([
 					expect.objectContaining({
-						taskId: todoUuid, // from create.body.data.taskId
+						taskId: todoUuid,
 						content: "buy milk",
 						userId: userUuid,
 					}),
@@ -164,7 +162,7 @@ describe("Todos e2e (todo-service)", () => {
 				},
 			});
 
-			// Verify persists
+			// Verify
 			const listAfterUpdate = await request(app.getHttpServer())
 				.get("/todos")
 				.set("Authorization", `Bearer ${token}`)
@@ -310,7 +308,7 @@ describe("Todos e2e (todo-service)", () => {
 				.send({})
 				.expect(400);
 
-			// Empty content (assuming DTO @IsNotEmpty)
+			// Empty content (DTO @IsNotEmpty)
 			await request(app.getHttpServer())
 				.post("/todos")
 				.set("Authorization", `Bearer ${token}`)
@@ -328,7 +326,7 @@ describe("Todos e2e (todo-service)", () => {
 		it("Update todo with invalid data -> 400", async () => {
 			const token = tokenFor(userUuid);
 
-			// First create a valid todo
+			// create a valid todo
 			const created = await request(app.getHttpServer())
 				.post("/todos")
 				.set("Authorization", `Bearer ${token}`)

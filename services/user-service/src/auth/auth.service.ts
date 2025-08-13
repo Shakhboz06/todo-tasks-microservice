@@ -34,7 +34,6 @@ export class AuthService {
 		email: string,
 		password: string,
 	): Promise<userRegisterPayload> {
-		// 1. Checking if the user already exists
 		const userExist = await this.prisma.users.findUnique({
 			where: { userEmail: email },
 		});
@@ -42,10 +41,8 @@ export class AuthService {
 			throw new ConflictException("Email already in use");
 		}
 
-		// 2. Hashing the user password
 		const hash = await bcrypt.hash(password, 10);
 
-		// 3. Create User
 		const user = await this.prisma.users.create({
 			data: { userEmail: email, userPwd: hash },
 		});
@@ -54,7 +51,6 @@ export class AuthService {
 	}
 
 	async login(email: string, password: string): Promise<userLoginPayload> {
-		// 1. Find the user
 		const user = await this.prisma.users.findUnique({
 			where: { userEmail: email },
 		});
@@ -62,13 +58,11 @@ export class AuthService {
 			throw new UnauthorizedException("Invalid credentials");
 		}
 
-		// 2. Compare password
 		const match = await bcrypt.compare(password, user.userPwd);
 		if (!match) {
 			throw new UnauthorizedException("Invalid credentials");
 		}
 
-		// 3. Signing JWT
 		const token = this.jwt.sign({ sub: user.uuid, email: user.userEmail });
 
 		return this.mapLoginResponse(token);

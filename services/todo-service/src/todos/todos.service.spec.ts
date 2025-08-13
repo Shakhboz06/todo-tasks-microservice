@@ -3,7 +3,6 @@ import { TodosService } from "./todos.service";
 import { PrismaService } from "../prisma/prisma.service";
 import { ForbiddenException, NotFoundException } from "@nestjs/common";
 
-// ---- helpers so tests work with any service return shape ----
 const unwrap = <T = any>(x: any): T =>
 	x && typeof x === "object" && "data" in x ? x.data : x;
 const getTaskId = (obj: any) => obj?.uuid ?? obj?.taskId;
@@ -66,8 +65,8 @@ describe("TodosService", () => {
 		const body = unwrap(result);
 		expect(body).toBeTruthy();
 		expect(body.content).toBe("Test task");
-		expect(getTaskId(body)).toBe("t-1"); // accepts uuid or taskId
-		expect(getUserId(body)).toBe("u-123"); // accepts user_uuid or userId
+		expect(getTaskId(body)).toBe("t-1");
+		expect(getUserId(body)).toBe("u-123");
 	});
 
 	// ========== FIND ALL ==========
@@ -90,7 +89,6 @@ describe("TodosService", () => {
 
 		const body = unwrap(result);
 
-		// service might return an array, or { length, tasks }
 		const list = Array.isArray(body) ? body : body?.tasks;
 		expect(Array.isArray(list)).toBe(true);
 		expect(list!.length).toBe(1);
@@ -99,7 +97,7 @@ describe("TodosService", () => {
 				content: "A task",
 			}),
 		);
-		// check IDs via tolerant accessors
+
 		expect(getTaskId(list![0])).toBe("t-1");
 		expect(getUserId(list![0])).toBe("u-123");
 	});
@@ -186,7 +184,7 @@ describe("TodosService", () => {
 		});
 
 		const body = unwrap(result);
-		// allow either a simple confirmation or a message wrapper
+
 		if (body && typeof body === "object" && "message" in body) {
 			expect(body.message).toMatch(/deleted/i);
 		}

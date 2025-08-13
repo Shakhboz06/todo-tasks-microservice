@@ -1,11 +1,10 @@
-// test/prisma.fake.ts
 import { Injectable, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
 import { randomUUID } from "crypto";
 
 type UserRow = {
-	id: number; // internal autoincrement
-	uuid: string; // public id exposed outward as user_id
-	userEmail: string; // stored email
+	id: number;
+	uuid: string;
+	userEmail: string;
 	userPwd: string; // hashed password (AuthService will provide this)
 	createdAt: Date;
 	updatedAt: Date;
@@ -16,17 +15,14 @@ export class PrismaFake implements OnModuleInit, OnModuleDestroy {
 	private _users: UserRow[] = [];
 	private _idSeq = 1;
 
-	// keep PrismaService lifecycle shape but do nothing
 	async onModuleInit(): Promise<void> {}
 	async onModuleDestroy(): Promise<void> {}
 
-	// helper for tests
 	cleanDatabase() {
 		this._users = [];
 		this._idSeq = 1;
 	}
 
-	// Prisma-like users model
 	public users = {
 		// findUnique({ where: { userEmail } }) OR findUnique({ where: { uuid } })
 		findUnique: async (args: {
@@ -72,7 +68,6 @@ export class PrismaFake implements OnModuleInit, OnModuleDestroy {
 		},
 	};
 
-	// optional debug helper
 	__debug_listUsers() {
 		return [...this._users];
 	}

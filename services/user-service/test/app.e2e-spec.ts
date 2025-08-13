@@ -47,7 +47,6 @@ describe("App bootstrap (e2e)", () => {
 	});
 
 	it("server runs and root returns 404 (placeholder)", async () => {
-		// Your previous run showed 404 on GET /. Keep test aligned with actual app.
 		await request(app.getHttpServer()).get("/").expect(404);
 	});
 });
