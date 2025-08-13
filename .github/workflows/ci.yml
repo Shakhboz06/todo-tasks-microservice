@@ -134,6 +134,7 @@ jobs:
 
           cat >> reports_publish/index.html <<'HTML'
           </ul>
+          <p>Published by CI</p>
           </body></html>
           HTML
 
