@@ -1,5 +1,8 @@
 name: CI Pipeline
 
+permissions:
+  contents: write
+  pages: write
 on:
   push:
     branches: [ main, master ]
@@ -119,6 +122,6 @@ jobs:
       - name: Deploy reports to GitHub Pages (gh-pages)
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GH_PAGES_PAT }}
           publish_dir: ./reports_publish
           publish_branch: gh-pages
