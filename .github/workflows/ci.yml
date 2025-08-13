@@ -39,7 +39,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
+          cache: npm
 
       - name: Install dependencies (root workspaces)
         run: npm ci
@@ -50,7 +50,6 @@ jobs:
       - name: Generate Prisma client (todo-service)
         run: npx prisma generate --schema services/todo-service/prisma/schema.prisma
 
-      # --- Migrations (per service, pass DATABASE_URL) ---
       - name: Run migrations (user-service)
         env:
           DATABASE_URL: ${{ env.DATABASE_USER_URL }}
@@ -61,8 +60,14 @@ jobs:
           DATABASE_URL: ${{ env.DATABASE_TASKS_URL }}
         run: npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
 
-      - name: Build all packages
-        run: npm run build --workspaces --if-present
+      - name: Build jwt lib first
+        run: npm run -w @backendrestapi/jwt build
+
+      - name: Build user-service
+        run: npm run -w user-service build
+
+      - name: Build todo-service
+        run: npm run -w todo-service build
 
       - name: Run tests
         env:
