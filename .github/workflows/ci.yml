@@ -23,11 +23,6 @@ jobs:
           POSTGRES_DB: testdb
         ports:
           - 5432:5432
-        options: >-
-          --health-cmd "pg_isready -U testuser"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
 
     env:
       DATABASE_USER_URL: postgresql://testuser:testpass@localhost:5432/testdb
@@ -89,9 +84,10 @@ jobs:
           npm run -w todo-service test:html --if-present || echo "todo-service test:html not present"
           npm run test:html --workspaces --if-present || echo "no root test:html workspace script"
 
-      - name: Reports folder
+      - name: Generate Test Reports Index
         run: |
           set -e
+          
           rm -rf reports_publish || true
           mkdir -p reports_publish
 
@@ -108,33 +104,38 @@ jobs:
           done
 
           if [ -z "$(ls -A reports_publish 2>/dev/null || true)" ]; then
-            echo "<html><body><h1>No reports generated</h1></body></html>" > reports_publish/index.html
+            echo "<html><body style='font-family:system-ui; text-align:center; padding:50px'><h1>📊 No reports generated</h1></body></html>" > reports_publish/index.html
             exit 0
           fi
 
           cat > reports_publish/index.html <<'HTML'
-          <!doctype html>
+          <!DOCTYPE html>
           <html>
-          <head><meta charset="utf-8"><title>Test Reports</title></head>
-          <body>
-          <h1>Test Reports</h1>
-          <ul>
+          <head>
+            <meta charset="utf-8">
+            <title>Test Reports</title>
+          </head>
+          <body style="font-family:system-ui; max-width:800px; margin:0 auto; padding:20px">
+            <h1 style="color:#333; border-bottom:2px solid #0066cc">📊 Test Reports</h1>
+            <ul style="list-style:none; padding:0">
           HTML
 
           for d in reports_publish/*; do
             [ -d "$d" ] || continue
             svcname=$(basename "$d")
             idx=$(find "$d" -type f -name index.html | head -n 1 || true)
+            
             if [ -n "$idx" ]; then
-              # make path relative to reports_publish root
+              # Make path relative to reports_publish root
               rel="${idx#reports_publish/}"
-              echo "  <li><a href=\"./$rel\">$svcname — report</a></li>" >> reports_publish/index.html
+              echo "              <li style='margin:8px 0'><a href='./$rel' style='color:#0066cc; text-decoration:none'>🔍 $svcname — Test Report</a></li>" >> reports_publish/index.html
             fi
           done
 
           cat >> reports_publish/index.html <<'HTML'
-          </ul>
-          </body></html>
+            </ul>
+          </body>
+          </html>
           HTML
 
       - name: Upload test reports artifact
