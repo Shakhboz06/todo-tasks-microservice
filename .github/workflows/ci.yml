@@ -156,14 +156,32 @@ jobs:
           DEPLOYMENTS=$(gh api repos/${{ github.repository }}/deployments --jq '.[8:][].id' 2>/dev/null || echo "")
           
           if [ -z "$DEPLOYMENTS" ]; then
-            echo "✅ Less than 8 deployments - nothing to clean"
+            echo " Less than 8 deployments - nothing to clean"
             exit 0
           fi
           
-          echo "🗑️ Cleaning up old deployments..."
+          echo " Cleaning up old deployments..."
           for id in $DEPLOYMENTS; do
-            gh api repos/${{ github.repository }}/deployments/$id -X DELETE || echo "⚠️ Could not delete $id"
+            echo "Processing deployment $id..."
+            
+            # First, deactivate the deployment by creating an 'inactive' status
+            gh api repos/${{ github.repository }}/deployments/$id/statuses \
+              --method POST \
+              --field state=inactive \
+              --field description="Automated cleanup" 2>/dev/null || echo "Could not deactivate $id"
+            
+            # Wait a moment for the status to be processed
+            sleep 1
+            
+            # Now try to delete the deployment
+            if gh api repos/${{ github.repository }}/deployments/$id -X DELETE 2>/dev/null; then
+              echo " Deleted deployment $id"
+            else
+              echo " Could not delete deployment $id"
+            fi
           done
+          
+          echo " Cleanup completed!"
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         continue-on-error: true
