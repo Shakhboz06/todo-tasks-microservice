@@ -165,5 +165,5 @@ jobs:
             gh api repos/${{ github.repository }}/deployments/$id -X DELETE || echo "⚠️ Could not delete $id"
           done
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         continue-on-error: true
