@@ -150,3 +150,20 @@ jobs:
           github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./reports_publish
           publish_branch: gh-pages
+      - name: Cleanup old deployments
+        run: |
+          # Keep only latest 8 deployments
+          DEPLOYMENTS=$(gh api repos/${{ github.repository }}/deployments --jq '.[8:][].id' 2>/dev/null || echo "")
+          
+          if [ -z "$DEPLOYMENTS" ]; then
+            echo "✅ Less than 8 deployments - nothing to clean"
+            exit 0
+          fi
+          
+          echo "🗑️ Cleaning up old deployments..."
+          for id in $DEPLOYMENTS; do
+            gh api repos/${{ github.repository }}/deployments/$id -X DELETE || echo "⚠️ Could not delete $id"
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        continue-on-error: true
