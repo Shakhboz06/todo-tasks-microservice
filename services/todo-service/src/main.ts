@@ -9,7 +9,7 @@ function buildCorsOptions() {
 		process.env.ALLOWED_ORIGINS?.split(",")
 			.map((s) => s.trim())
 			.filter(Boolean) ?? [];
-	const single = process.env.FRONTEND_URL?.trim();
+	const single = process.env.ALLOWED_ORIGINS?.trim();
 	const allowlist = new Set<string>([...envList, ...(single ? [single] : [])]);
 
 	return {
