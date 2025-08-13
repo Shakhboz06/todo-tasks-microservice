@@ -1,241 +1,377 @@
-# ✅ Todo Tasks Microservice (NestJS + Prisma + Supabase)
+# 📋 Todo Tasks Microservice
 
-A production-ready **microservice-based Todo application** built with **NestJS**, **Prisma**, **PostgreSQL (Supabase)**, **Docker**, and **Caddy** as the reverse proxy.
+[![CI Pipeline](https://github.com/Shakhboz06/todo-tasks-microservice/workflows/CI%20Pipeline/badge.svg)](https://github.com/Shakhboz06/todo-tasks-microservice/actions)
+[![Test Reports](https://img.shields.io/badge/📊-Test%20Reports-blue)](https://shakhboz06.github.io/todo-tasks-microservice)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-The system consists of:
-- **user-service** → Handles authentication, JWT token issuance, and user management.
-- **todo-service** → Handles CRUD operations for user-specific todos.
-- **Caddy** → Reverse proxy, HTTPS via Let's Encrypt, routes requests to the correct service, and serves Swagger API docs.
-- **Frontend** → Vue 3 + Vite app (hosted on Vercel).
-- **Database** → Managed PostgreSQL instance via Supabase.
+> A production-ready **microservice-based Todo application** built with **NestJS**, **Prisma**, **PostgreSQL**, **Docker**, and **Caddy** reverse proxy.
 
----
+## 📖 Table of Contents
 
-## 🚀 Live Links
+- [🚀 Live Demo](#-live-demo)
+- [✨ Features](#-features)
+- [🏗️ Architecture](#️-architecture)
+- [🛠️ Tech Stack](#️-tech-stack)
+- [⚡ Quick Start](#-quick-start)
+- [🔧 Local Development](#-local-development)
+- [🧪 Testing](#-testing)
+- [🌐 Production Deployment](#-production-deployment)
+- [📜 API Documentation](#-api-documentation)
+- [🔒 Security](#-security)
+- [📂 Project Structure](#-project-structure)
+- [⚙️ Environment Variables](#️-environment-variables)
+- [🚀 CI/CD](#-cicd)
+- [🤝 Contributing](#-contributing)
+- [📄 License](#-license)
 
-| Component | URL |
-|-----------|-----|
-| **Frontend (Vercel)** | https://todo-tasks-one.vercel.app |
-| **API Gateway (Caddy)** | https://mytodotasks.duckdns.org |
-| **Swagger Docs (User Service)** | https://mytodotasks.duckdns.org/auth/docs |
-| **Swagger Docs (Todo Service)** | https://mytodotasks.duckdns.org/todos/docs |
-| **📊 Test Reports** | https://shakhboz06.github.io/todo-tasks-microservice |
+## 🚀 Live Demo
 
----
+| Service | URL | Status |
+|---------|-----|---------|
+| **Frontend** | [todo-tasks-one.vercel.app](https://todo-tasks-one.vercel.app) | ✅ Live |
+| **User Service Docs** | [mytodotasks.duckdns.org/auth/docs](https://mytodotasks.duckdns.org/auth/docs) | ✅ Live |
+| **Todo Service Docs** | [mytodotasks.duckdns.org/todos/docs](https://mytodotasks.duckdns.org/todos/docs) | ✅ Live |
+| **Test Reports** | [shakhboz06.github.io/todo-tasks-microservice](https://shakhboz06.github.io/todo-tasks-microservice) | ✅ Live |
 
-## 🧪 Testing & Quality Assurance
+## ✨ Features
 
-This project includes comprehensive test coverage and automated quality checks:
+### 🔐 **Authentication & Authorization**
+- User registration and login
+- JWT token-based authentication
+- Secure password hashing
+- Token expiration handling
 
-- **Unit Tests** → Individual service components and utilities
-- **Integration Tests** → API endpoints and database operations  
-- **End-to-End Tests** → Complete user workflows
-- **Coverage Reports** → Detailed test coverage metrics
+### 📋 **Todo Management**
+- Create, read, update, delete todos
+- User-specific todo isolation
+- Real-time updates
 
-### View Test Reports
-- **📊 Live Test Reports:** https://shakhboz06.github.io/todo-tasks-microservice
-- **CI Pipeline:** Automatically runs tests on every push/PR
-- **Coverage Thresholds:** Maintains high code quality standards
+### 🏗️ **Microservice Architecture**
+- Independent service deployment
+- Database per service 
 
-### Running Tests Locally
-```bash
-# Install dependencies
-npm ci
+### 🔒 **Security & Quality**
+- CORS protection
+- Helmet security headers
+- Input validation
+- Comprehensive test coverage
+- Automated CI/CD pipeline
 
-# Set up test database (if using Docker)
-docker compose up -d postgres
-
-# Run all tests
-npm test
-
-# Run tests with coverage
-npm run test:cov
-
-# Generate HTML reports
-npm run test:html
-
-# Run specific service tests
-npm run -w user-service test
-npm run -w todo-service test
-```
-
-### Test Report Structure
-```
-reports_publish/
-├── index.html              # Test reports dashboard
-├── user-service/           # User service test results
-│   ├── coverage/          # Coverage reports
-│   └── test-results.html  # Test results
-└── todo-service/           # Todo service test results
-    ├── coverage/          # Coverage reports  
-    └── test-results.html  # Test results
-```
-
----
-
-## 📂 Repository Structure
+## 🏗️ Architecture
 
 ```
-.
-├─ .github/workflows/ci.yml     # GitHub Actions CI pipeline
-├─ docs/                        # Swagger docs & additional documentation
-├─ frontend/                    # Vue 3 frontend app
-├─ libs/                        # Shared NestJS libraries (e.g., JWT utils)
-│  ├─ common/
-│  └─ jwt/
-├─ services/                    # Backend microservices
-│  ├─ user-service/              # Auth service
-│  └─ todo-service/              # Todo service
-├─ Caddyfile                    # Reverse proxy config
-├─ docker-compose.yml           # Local dev stack
-├─ docker-compose.prod.yml      # Production stack
-├─ Makefile                     # Handy CLI commands
-├─ .env.compose.example         # Example environment variables
-└─ package.json                 # Monorepo package definition
+┌─────────────────┐    ┌─────────────────┐
+│   Frontend      │    │     Caddy       │
+│   (Vue 3)       │◄──►│ Reverse Proxy   │
+│                 │    │   + HTTPS       │
+└─────────────────┘    └─────────┬───────┘
+                                 │
+                    ┌────────────┼────────────┐
+                    ▼            ▼            ▼
+            ┌───────────┐ ┌──────────┐ ┌─────────────┐
+            │User       │ │Todo      │ │Shared       │
+            │Service    │ │Service   │ │Libraries    │
+            │(Auth/JWT) │ │(CRUD)    │ │(@libs)      │
+            └─────┬─────┘ └────┬─────┘ └─────────────┘
+                  │            │
+                  ▼            ▼
+            ┌───────────┐ ┌──────────┐
+            │PostgreSQL │ │PostgreSQL│
+            │(Users)    │ │(Todos)   │
+            └───────────┘ └──────────┘
 ```
 
----
+## 🛠️ Tech Stack
 
-## 🛠 Tech Stack
-
-- **Backend Framework:** NestJS
+### **Backend**
+- **Framework:** NestJS (Node.js)
+- **Language:** TypeScript
 - **ORM:** Prisma
-- **Database:** PostgreSQL (Supabase for production)
-- **Reverse Proxy & TLS:** Caddy
-- **Frontend:** Vue 3 + Vite
+- **Database:** PostgreSQL (Supabase)
+- **Authentication:** JWT + bcrypt
+- **Validation:** class-validator
+
+### **Frontend**
+- **Framework:** Vue 3
+- **Build Tool:** Vite
+- **Styling:** Tailwind CSS
+- **HTTP Client:** Axios
+
+### **Infrastructure**
+- **Reverse Proxy:** Caddy (HTTPS + Let's Encrypt)
 - **Containerization:** Docker + Docker Compose
-- **CI/CD:** GitHub Actions
+- **Hosting:** VPS (Linode) + Vercel (Frontend)
+- **Domain:** DuckDNS
+
+### **Development & CI/CD**
 - **Testing:** Jest + Supertest
+- **CI/CD:** GitHub Actions
+- **Code Quality:** ESLint + Prettier
+- **Documentation:** Swagger/OpenAPI
 
----
+## ⚡ Quick Start
 
-## ⚙️ Environment Variables
+### 🎯 **Try the Live Demo**
+1. Visit: https://todo-tasks-one.vercel.app
+2. Register a new account or login
+3. Create, edit, and manage your todos
+4. Explore the API docs: https://mytodotasks.duckdns.org/auth/docs
 
-All environment variables for Docker Compose are in `.env.compose`.
+### 🚀 **Run Locally (Docker)**
+```bash
+# Clone repository
+git clone https://github.com/Shakhboz06/todo-tasks-microservice.git
+cd todo-tasks-microservice
 
-### Shared
-```env
-NODE_ENV=production
-JWT_SECRET=change_me
-JWT_EXPIRES_IN=900s
-ALLOWED_ORIGINS=https://todo-tasks-one.vercel.app,https://mytodotasks.duckdns.org
+# Copy environment variables
+cp .env.compose.example .env.compose
+
+# Start all services
+docker compose up -d --build
+
+# Run database migrations
+docker compose exec user-service npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
+docker compose exec todo-service npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
+
+# Access the application
+# Frontend: http://localhost:5173
+# API Docs: http://localhost:3001/docs (user-service)
+# API Docs: http://localhost:3002/docs (todo-service)
 ```
 
-### user-service
-```env
-# Local development
-DATABASE_USER_URL=postgresql://postgres:secretpass@user-db:5432/users
-```
+## 🔧 Local Development
 
-### todo-service
-```env
-# Local development
-DATABASE_TASKS_URL=postgresql://postgres:secretpass@todo-db:5432/tasks
-```
+### **Prerequisites**
+- Node.js 20+
+- Docker & Docker Compose
+- Git
 
----
-
-## 💻 Local Development
-
+### **Development Setup**
 ```bash
 # 1. Install dependencies
 npm ci
 
 # 2. Set environment variables
-# Copy from example and update values:
-DATABASE_USER_URL=postgresql://postgres:secretpass@user-db:5432/users
-DATABASE_TASKS_URL=postgresql://postgres:secretpass@todo-db:5432/tasks
-JWT_EXPIRES_IN=1200s
-JWT_SECRET=anything_here_your_jwt_secret123
-ALLOWED_ORIGINS=http://localhost:5173
+DATABASE_USER_URL="postgresql://postgres:secretpass@localhost:5432/users"
+DATABASE_TASKS_URL="postgresql://postgres:secretpass@localhost:5433/tasks"
+JWT_SECRET="your-secret-key-here"
+JWT_EXPIRES_IN="1200s"
+ALLOWED_ORIGINS="http://localhost:5173"
 
-# 3. Start stack
-docker compose up -d --build
+# 3. Start databases only
+docker compose up -d
 
-# 4. Run database migrations
-docker compose exec user-service npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
-docker compose exec todo-service npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
+# 4. Generate Prisma clients
+npx prisma generate --schema services/user-service/prisma/schema.prisma
+npx prisma generate --schema services/todo-service/prisma/schema.prisma
 
-# 5. Run tests (optional)
-npm test
-npm run test:html  # Generate HTML reports
+# 5. Run migrations
+npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
+npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
 
-# 6. Access services
-# http://localhost:3001/docs  (user-service)
-# http://localhost:3002/docs  (todo-service)
+# 6. Build shared libraries
+npm run -w @backendrestapi/jwt build
+
+# 7. Start services in development mode
+npm run -w user-service start:dev
+npm run -w todo-service start:dev
 ```
 
----
+### **Useful Commands**
+```bash
+# Start specific service
+npm run -w user-service start:dev
+npm run -w todo-service start:dev
+
+# View database
+npx prisma studio --schema services/user-service/prisma/schema.prisma
+npx prisma studio --schema services/todo-service/prisma/schema.prisma
+
+# Reset database
+npx prisma migrate reset --schema services/user-service/prisma/schema.prisma
+```
+
+## 🧪 Testing
+
+This project includes comprehensive testing with **Unit Tests** and **E2E Tests** for all services.
+
+### **📊 View Test Reports**
+- **Live Reports:** https://shakhboz06.github.io/todo-tasks-microservice
+- Automatically updated on every CI run
+- Includes coverage metrics and detailed results
+
+### **Run Tests Locally**
+```bash
+# Install dependencies
+npm ci
+
+# Run all tests (unit + e2e for all services)
+npm test
+```
+
+### **Test Structure**
+```
+services/
+├── user-service/
+│   ├── src/
+│   │   └── **/*.spec.ts     # Unit tests
+│   └── test/
+│       └── **/*.e2e-spec.ts # E2E tests
+└── todo-service/
+    ├── src/
+    │   └── **/*.spec.ts     # Unit tests
+    └── test/
+        └── **/*.e2e-spec.ts # E2E tests
+```
+
+### **Coverage Goals**
+- **Unit Tests:** Core business logic and utilities
+- **E2E Tests:** API endpoints and complete workflows  
+- **Target Coverage:** >80% for critical paths
 
 ## 🌐 Production Deployment
 
-The production setup runs on a VPS (e.g., Linode) using `docker-compose.prod.yml`.
-
-### 1. Prepare `.env.compose`
-- Use **pooled** Supabase connection strings (port 6543, `sslmode=require`).
-- Set `ALLOWED_ORIGINS` to both Vercel URL and API domain.
-
-### 2. Start services
+### **VPS Deployment (Current)**
 ```bash
+# 1. Prepare environment
+cp .env.compose.example .env.compose
+# Edit with production values (Supabase URLs, etc.)
+
+# 2. Deploy stack
 docker compose -f docker-compose.prod.yml up -d --build
-```
 
-### 3. Run migrations
-```bash
+# 3. Run migrations
 docker compose exec user-service npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
 docker compose exec todo-service npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
+
 ```
 
----
+### **Infrastructure Overview**
+- **VPS:** Linode
+- **Domain:** DuckDNS
+- **SSL:** Let's Encrypt (via Caddy)
+- **Database:** Supabase (managed PostgreSQL)
+- **Frontend:** Vercel
 
-## 📜 API Overview
+## 📜 API Documentation
 
-### Auth Service
-- **POST** `/auth/register` → Create a new user.
-- **POST** `/auth/login` → Login and receive JWT token.
+### **Authentication Service**
+```http
+POST /auth/register     # Create new user
+POST /auth/login        # Authenticate user
+```
 
-### Todo Service (requires Bearer token)
-- **GET** `/todos` → List todos.
-- **POST** `/todos` → Create todo.
-- **PUT** `/todos/:id` → Update todo.
-- **DELETE** `/todos/:id` → Delete todo.
+### **Todo Service** (JWT required)
+```http
+GET    /todos           # List user todos
+POST   /todos           # Create new todo
+PUT    /todos/:id       # Update todo
+DELETE /todos/:id       # Delete todo
+```
 
-Full Swagger API docs:
-- https://mytodotasks.duckdns.org/auth/docs
-- https://mytodotasks.duckdns.org/todos/docs
+### **Interactive Documentation**
+- **User Service:** https://mytodotasks.duckdns.org/auth/docs
+- **Todo Service:** https://mytodotasks.duckdns.org/todos/docs
+- Built with Swagger/OpenAPI 3.0
 
----
+## 🔒 Security
 
-## 🛡 Security
+### **Authentication**
+- JWT tokens with HS256 algorithm
+- Configurable token expiration
+- Secure password hashing with bcrypt
 
-- **CORS** restricted to `ALLOWED_ORIGINS`.
-- **Helmet** enabled for HTTP headers.
-- **JWT Authentication** with `HS256`.
+### **API Security**
+- CORS restricted to allowed origins
+- Helmet.js security headers
+- Input validation on all endpoints
+- SQL injection prevention via Prisma
 
----
+### **Infrastructure Security**
+- HTTPS enforced via Caddy
+- Environment variable isolation
+- Database connection encryption
+- Container security best practices
 
-## 📌 Quick Start for Reviewers
+## 📂 Project Structure
 
-1. **Frontend:** https://todo-tasks-one.vercel.app  
-2. **Register and log in** to test the full workflow
-3. **Create, update, and delete** todos to see the system in action  
-4. **Explore APIs** via Swagger docs
-5. **View Test Reports:** https://shakhboz06.github.io/todo-tasks-microservice
+```
+.
+├── .github/
+│   └── workflows/ci.yml        # GitHub Actions CI/CD
+├── docs/                       # Documentation
+├── frontend/                   # Vue 3 frontend
+├── libs/                       # Shared NestJS libraries
+│   ├── common/                 # Common utilities
+│   └── jwt/                    # JWT authentication lib
+├── services/                   # Microservices
+│   ├── user-service/           # Authentication service
+│   │   ├── src/
+│   │   ├── test/
+│   │   └── prisma/
+│   └── todo-service/           # Todo management service
+│       ├── src/
+│       ├── test/
+│       └── prisma/
+├── Caddyfile                   # Reverse proxy config
+├── docker-compose.yml          # Local development
+├── docker-compose.prod.yml     # Production deployment
+├── Makefile                    # Development commands
+└── package.json                # Workspace configuration
+```
 
----
+## ⚙️ Environment Variables
 
-## 🚀 Continuous Integration
+### **Development (.env.compose)**
+```bash
+# Database connections
+DATABASE_USER_URL="postgresql://postgres:secretpass@user-db:5432/users"
+DATABASE_TASKS_URL="postgresql://postgres:secretpass@todo-db:5432/tasks"
 
-The project uses GitHub Actions for automated testing and deployment:
+# JWT configuration
+JWT_SECRET="your-dev-secret-key"
+JWT_EXPIRES_IN="1200s"
 
-- ✅ **Automated testing** on every push/PR
-- 📊 **Test coverage reports** generated automatically  
-- 🚀 **GitHub Pages deployment** for test reports
-- 🔄 **Multi-service testing** with shared database
+# CORS
+ALLOWED_ORIGINS="http://localhost:5173,http://localhost:3000"
 
-**Build Status:** ![CI](https://github.com/Shakhboz06/todo-tasks-microservice/workflows/CI%20Pipeline/badge.svg)
+# Environment
+NODE_ENV="development"
+```
 
----
+### **Production**
+```bash
+# Supabase (pooled connections)
+DATABASE_USER_URL="postgresql://user:pass@host:6543/users?sslmode=require"
+DATABASE_TASKS_URL="postgresql://user:pass@host:6543/tasks?sslmode=require"
+
+# Production settings
+JWT_SECRET="strong-production-secret"
+JWT_EXPIRES_IN="1200s"
+ALLOWED_ORIGINS=origins
+NODE_ENV="production"
+```
+
+## 🚀 CI/CD
+
+### **GitHub Actions Pipeline**
+- ✅ **Automated Testing:** Unit and E2E tests on every push
+- 📊 **Test Reports:** Generated and deployed to GitHub Pages
+- 🔍 **Code Quality:** ESLint and TypeScript checks
+- 🗑️ **Cleanup:** Automatic deployment history management
+
+### **Pipeline Steps**
+1. Checkout code and setup Node.js
+2. Install dependencies and build shared libraries
+3. Setup PostgreSQL test database
+4. Run Prisma migrations
+5. Execute test suites (unit + e2e)
+6. Generate HTML test reports
+7. Deploy reports to GitHub Pages
+8. Cleanup old deployments
 
 ## 📄 License
-MIT
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
