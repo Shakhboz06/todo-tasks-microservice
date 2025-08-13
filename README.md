@@ -368,9 +368,4 @@ NODE_ENV="production"
 6. Generate HTML test reports
 7. Deploy reports to GitHub Pages
 8. Cleanup old deployments
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
 ---
