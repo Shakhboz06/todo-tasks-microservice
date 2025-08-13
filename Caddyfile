@@ -1,5 +1,4 @@
 
-
 (static) {
     @static {
         file
@@ -32,7 +31,7 @@ mytodotasks.duckdns.org {
     
     handle_path /todos/docs* {
         uri strip_prefix /todos
-        reverse_proxy user-service:3002
+        reverse_proxy todo-service:3002
     }   
 
     handle /auth* {
