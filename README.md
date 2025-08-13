@@ -95,7 +95,6 @@
 - **Framework:** Vue 3
 - **Build Tool:** Vite
 - **Styling:** Tailwind CSS
-- **HTTP Client:** Axios
 
 ### **Infrastructure**
 - **Reverse Proxy:** Caddy (HTTPS + Let's Encrypt)
@@ -104,7 +103,7 @@
 - **Domain:** DuckDNS
 
 ### **Development & CI/CD**
-- **Testing:** Jest + Supertest
+- **Testing:** Jest
 - **CI/CD:** GitHub Actions
 - **Code Quality:** ESLint + Prettier
 - **Documentation:** Swagger/OpenAPI
