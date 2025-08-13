@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="13" failures="0" errors="0" time="9.157">
+  <testsuite name="App bootstrap (e2e)" errors="0" failures="0" skipped="0" timestamp="2025-08-13T18:25:08" time="7.176" tests="1">
+    <testcase classname="App bootstrap (e2e) server runs and root returns 404 (placeholder)" name="App bootstrap (e2e) server runs and root returns 404 (placeholder)" time="0.034">
+    </testcase>
+  </testsuite>
+  <testsuite name="Auth e2e" errors="0" failures="0" skipped="0" timestamp="2025-08-13T18:25:08" time="8.088" tests="12">
+    <testcase classname="Auth e2e POST /auth/register registers a new user successfully" name="Auth e2e POST /auth/register registers a new user successfully" time="0.167">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/register rejects duplicate email registration" name="Auth e2e POST /auth/register rejects duplicate email registration" time="0.104">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/register validates email format" name="Auth e2e POST /auth/register validates email format" time="0.01">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/register validates password requirements" name="Auth e2e POST /auth/register validates password requirements" time="0.013">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/register requires both fields" name="Auth e2e POST /auth/register requires both fields" time="0.015">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login logs in successfully with valid credentials" name="Auth e2e POST /auth/login logs in successfully with valid credentials" time="0.219">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login returns 401 for wrong password" name="Auth e2e POST /auth/login returns 401 for wrong password" time="0.174">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login returns 401 for non-existent user" name="Auth e2e POST /auth/login returns 401 for non-existent user" time="0.088">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login validates missing email" name="Auth e2e POST /auth/login validates missing email" time="0.093">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login validates missing password" name="Auth e2e POST /auth/login validates missing password" time="0.085">
+    </testcase>
+    <testcase classname="Auth e2e POST /auth/login validates invalid email format" name="Auth e2e POST /auth/login validates invalid email format" time="0.09">
+    </testcase>
+    <testcase classname="Auth e2e Authentication Edge Cases handles special characters in email" name="Auth e2e Authentication Edge Cases handles special characters in email" time="0.083">
+    </testcase>
+  </testsuite>
+</testsuites>

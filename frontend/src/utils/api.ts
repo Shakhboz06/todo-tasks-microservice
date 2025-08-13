@@ -13,7 +13,7 @@ function makeClient(base: string) {
 			const msg = (json as any)?.message ?? res.statusText ?? "Request failed";
 			throw new Error(msg);
 		}
-		
+
 		if (json && typeof json === "object" && "data" in (json as any)) {
 			return (json as any).data as T;
 		}
@@ -45,9 +45,5 @@ function makeClient(base: string) {
 	} as const;
 }
 
-export const authApi = makeClient(
-	import.meta.env.VITE_AUTH_BASE_URL,
-);
-export const todosApi = makeClient(
-	import.meta.env.VITE_TODOS_BASE_URL,
-);
+export const authApi = makeClient(import.meta.env.VITE_AUTH_BASE_URL);
+export const todosApi = makeClient(import.meta.env.VITE_TODOS_BASE_URL);

@@ -75,3 +75,50 @@ jobs:
           DATABASE_TASKS_URL: ${{ env.DATABASE_TASKS_URL }}
           JWT_SECRET: ${{ env.JWT_SECRET }}
         run: npm test --workspaces --if-present
+      - name: Generate HTML reports (if configured in services)
+        run: |
+          # Try service-level scripts (won't fail the job if absent)
+          npm run -w user-service test:html --if-present || echo "user-service test:html not present"
+          npm run -w todo-service test:html --if-present || echo "todo-service test:html not present"
+          # Try a root-level workspace html script if you created one
+          npm run test:html --workspaces --if-present || echo "no root test:html workspace script"
+
+      - name: Prepare consolidated reports folder
+        run: |
+          # create a clean publish folder
+          rm -rf reports_publish consolidated_reports || true
+          mkdir -p consolidated_reports
+          # copy root-level reports into consolidated_reports (if any)
+          if [ -d "./reports" ]; then
+            # copy contents (not the folder itself) to consolidated_reports
+            shopt -s dotglob || true
+            cp -R ./reports/* consolidated_reports/ 2>/dev/null || true
+          fi
+          # copy reports from services into consolidated_reports/<service-name>/
+          for svc in services/*; do
+            if [ -d "$svc/reports" ]; then
+              svcname=$(basename "$svc")
+              mkdir -p "consolidated_reports/$svcname"
+              cp -R "$svc/reports/"* "consolidated_reports/$svcname/" 2>/dev/null || true
+            fi
+          done
+          # if there is nothing, create a small index to show no reports found
+          mkdir -p reports_publish
+          if [ "$(ls -A consolidated_reports 2>/dev/null || true)" != "" ]; then
+            cp -R consolidated_reports/* reports_publish/ || true
+          else
+            echo "<html><body><h1>No reports generated</h1></body></html>" > reports_publish/index.html
+          fi
+
+      - name: Upload test reports artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports
+          path: reports_publish
+
+      - name: Deploy reports to GitHub Pages (gh-pages)
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports_publish
+          publish_branch: gh-pages
