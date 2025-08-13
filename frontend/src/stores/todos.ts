@@ -28,16 +28,16 @@ export const useTodosStore = defineStore("todos", {
 		async add(content: string) {
 			const t = await todosApi.post<Todo>("/todos", { content });
 			this.items.push(t);
-			return t; // so the component can init its draft
+			return t;
 		},
 		async update(taskId: string, patch: Partial<Todo>) {
 			const t = await todosApi.put<Todo>(`/todos/${taskId}`, patch);
 			const i = this.items.findIndex((x) => x.taskId === taskId);
 			if (i !== -1) this.items[i] = t;
-			return t; // so the component can sync draft
+			return t;
 		},
 		async remove(taskId: string) {
-			await todosApi.delete(`/todos/${taskId}`); // 204 expected
+			await todosApi.delete(`/todos/${taskId}`);
 			this.items = this.items.filter((t) => t.taskId !== taskId);
 		},
 	},

@@ -34,7 +34,6 @@ const mode = ref<'login'|'register'>('login');
 const email = ref(''); const password = ref(''); const pending = ref(false); const error = ref('');
 
 onMounted(() => {
-  // autofocus first field for faster entry
   requestAnimationFrame(() => (document.querySelector('input[type="email"]') as HTMLInputElement)?.focus());
 });
 
@@ -47,7 +46,6 @@ async function submit() {
     } else {
       await auth.register(email.value, password.value);
       mode.value = 'login';
-      // optional: focus email again
       (document.querySelector('input[type="email"]') as HTMLInputElement)?.focus();
     }
   } catch(e:any){ error.value = e?.message || 'Failed'; }

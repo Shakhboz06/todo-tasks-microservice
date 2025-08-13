@@ -1,4 +1,3 @@
-// src/stores/auth.ts
 import { defineStore } from "pinia";
 import { authApi } from "../utils/api";
 
@@ -46,7 +45,6 @@ export const useAuthStore = defineStore("auth", {
 			localStorage.removeItem("token");
 		},
 		async ensure() {
-			// called on app/router load
 			if (!this.token) {
 				this.logout();
 				return false;

@@ -1,4 +1,3 @@
-// src/router/index.ts
 import {
 	createRouter,
 	createWebHistory,

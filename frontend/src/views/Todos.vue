@@ -2,7 +2,6 @@
   <div class="card">
     <h2 class="h2 mb-6">Todos</h2>
 
-    <!-- add bar -->
     <div class="flex gap-2 mb-6">
       <input v-model.trim="newContent" placeholder="Add a todo…" class="input flex-1" @keyup.enter="add" />
       <button class="btn" @click="add" :disabled="!newContent">Add</button>
@@ -11,7 +10,6 @@
     <p v-if="todos.loading" class="muted">Loading…</p>
     <p v-if="todos.error" class="text-red-600 text-sm mb-4">{{ todos.error }}</p>
 
-    <!-- responsive GRID -->
     <ul v-if="todos.items.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
       <li v-for="t in todos.items" :key="t.taskId"
           class="rounded-2xl border border-gray-200 bg-white p-4 shadow-xs flex flex-col min-h-[140px]">
@@ -19,7 +17,6 @@
           {{ t.content }}
         </div>
 
-        <!-- actions anchored to bottom inside the card -->
         <div class="mt-auto pt-4 flex justify-end gap-2">
           <button class="btn" @click="openModal(t)">Update</button>
           <button class="btn" @click="remove(t.taskId)">Delete</button>
@@ -30,7 +27,6 @@
     <p v-else class="muted">No todos yet.</p>
   </div>
 
-  <!-- EDIT MODAL -->
   <div v-if="editing" class="fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4" @keydown.esc="closeModal">
     <div class="w-full max-w-md rounded-2xl bg-white shadow-xl border border-gray-200">
       <div class="flex items-center justify-between px-4 py-3 border-b border-gray-200">

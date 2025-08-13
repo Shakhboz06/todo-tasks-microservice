@@ -13,14 +13,13 @@ function makeClient(base: string) {
 			const msg = (json as any)?.message ?? res.statusText ?? "Request failed";
 			throw new Error(msg);
 		}
-		// unwrap { success, data, message }
+		
 		if (json && typeof json === "object" && "data" in (json as any)) {
 			return (json as any).data as T;
 		}
 		return json as T;
 	}
 
-	// IMPORTANT: no `this` usage
 	const fetchFn = <T>(path: string, init: RequestInit = {}) => {
 		const auth = useAuthStore();
 		const headers: Record<string, string> = {
@@ -46,10 +45,9 @@ function makeClient(base: string) {
 	} as const;
 }
 
-// two clients: Auth (3001) and Todos (3002)
 export const authApi = makeClient(
-	import.meta.env.VITE_AUTH_BASE_URL || "https://mytodotasks.duckdns.org",
+	import.meta.env.VITE_AUTH_BASE_URL,
 );
 export const todosApi = makeClient(
-	import.meta.env.VITE_TODOS_BASE_URL || "https://mytodotasks.duckdns.org",
+	import.meta.env.VITE_TODOS_BASE_URL,
 );
