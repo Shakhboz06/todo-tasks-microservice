@@ -9,42 +9,35 @@
 
 (security) {
     header {
-        
         Strict-Transport-Security max-age=31536000;
         X-Content-Type-Options nosniff
         Referrer-Policy no-referrer-when-downgrade
-        
     }
 }
 
 mytodotasks.duckdns.org {
-    encode zstd gzip
-    import security
-    
-    @cors_preflight method OPTIONS
-    respond @cors_preflight 200
-    
-    handle_path /auth/docs* {
-        uri strip_prefix /auth
-        reverse_proxy user-service:3001
-    }   
-    
-    handle_path /todos/docs* {
-        uri strip_prefix /todos
-        reverse_proxy todo-service:3002
-    }   
+  encode zstd gzip
 
-    handle /auth* {
-        reverse_proxy user-service:3001
-    }
-    
+  handle /auth/docs* {
+    uri replace /auth/docs /docs
+    reverse_proxy user-service:3001
+  }
 
-    handle /todos* {
-        reverse_proxy todo-service:3002
-    }
-    
-    
-    handle {
-        respond "Task Microservices API Ready" 200
-    }
+  handle /todos/docs* {
+    uri replace /todos/docs /docs
+    reverse_proxy todo-service:3002
+  }
+
+  handle /auth*  {
+    reverse_proxy user-service:3001
+  }
+
+  handle /todos* {
+    reverse_proxy todo-service:3002
+  }
+
+  handle {
+    respond "Task Microservices API Ready" 200
+  }
+
 }
