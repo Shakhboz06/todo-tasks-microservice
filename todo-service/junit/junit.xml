@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="8" failures="0" errors="0" time="4.971">
+  <testsuite name="Todos e2e (todo-service)" errors="0" failures="0" skipped="0" timestamp="2025-08-13T18:24:59" time="4.607" tests="8">
+    <testcase classname="Todos e2e (todo-service) Authentication POST /todos requires auth -&gt; 401" name="Todos e2e (todo-service) Authentication POST /todos requires auth -&gt; 401" time="0.053">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) Authentication GET /todos requires auth -&gt; 401" name="Todos e2e (todo-service) Authentication GET /todos requires auth -&gt; 401" time="0.008">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) CRUD Operations CRUD happy path (owned)" name="Todos e2e (todo-service) CRUD Operations CRUD happy path (owned)" time="0.081">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) CRUD Operations GET /todos only returns user-owned todos" name="Todos e2e (todo-service) CRUD Operations GET /todos only returns user-owned todos" time="0.045">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) Authorization (Ownership) Update/Delete enforce ownership -&gt; 403" name="Todos e2e (todo-service) Authorization (Ownership) Update/Delete enforce ownership -&gt; 403" time="0.03">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) Error Cases Update/Delete for missing todo -&gt; 404" name="Todos e2e (todo-service) Error Cases Update/Delete for missing todo -&gt; 404" time="0.016">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) Error Cases Create todo with invalid data -&gt; 400" name="Todos e2e (todo-service) Error Cases Create todo with invalid data -&gt; 400" time="0.022">
+    </testcase>
+    <testcase classname="Todos e2e (todo-service) Error Cases Update todo with invalid data -&gt; 400" name="Todos e2e (todo-service) Error Cases Update todo with invalid data -&gt; 400" time="0.014">
+    </testcase>
+  </testsuite>
+</testsuites>
