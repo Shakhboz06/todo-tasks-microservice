@@ -1,6 +1,4 @@
-{
-    email daniel.brook29@gmail.com
-}
+
 
 (static) {
     @static {
@@ -17,11 +15,6 @@
         X-Content-Type-Options nosniff
         Referrer-Policy no-referrer-when-downgrade
         
-        
-        Access-Control-Allow-Origin https://todo-tasks-one.vercel.app
-        Access-Control-Allow-Methods "GET, POST, PUT, DELETE, OPTIONS"
-        Access-Control-Allow-Headers "Content-Type, Authorization"
-        Access-Control-Allow-Credentials true
     }
 }
 
@@ -45,6 +38,6 @@ mytodotasks.duckdns.org {
     
     
     handle {
-        respond "Microservices API Ready" 200
+        respond "Task Microservices API Ready" 200
     }
 }
