@@ -3,6 +3,7 @@ name: CI Pipeline
 permissions:
   contents: write
   pages: write
+
 on:
   push:
     branches: [ main, master ]
@@ -37,6 +38,9 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -78,40 +82,61 @@ jobs:
           DATABASE_TASKS_URL: ${{ env.DATABASE_TASKS_URL }}
           JWT_SECRET: ${{ env.JWT_SECRET }}
         run: npm test --workspaces --if-present
-      - name: Generate HTML reports (if configured in services)
+
+      - name: Generate HTML reports
         run: |
-          # Try service-level scripts (won't fail the job if absent)
           npm run -w user-service test:html --if-present || echo "user-service test:html not present"
           npm run -w todo-service test:html --if-present || echo "todo-service test:html not present"
-          # Try a root-level workspace html script if you created one
           npm run test:html --workspaces --if-present || echo "no root test:html workspace script"
 
-      - name: Prepare consolidated reports folder
+      - name: Reports folder
         run: |
-          # create a clean publish folder
-          rm -rf reports_publish consolidated_reports || true
-          mkdir -p consolidated_reports
-          # copy root-level reports into consolidated_reports (if any)
+          set -e
+          rm -rf reports_publish || true
+          mkdir -p reports_publish
+
           if [ -d "./reports" ]; then
-            # copy contents (not the folder itself) to consolidated_reports
-            shopt -s dotglob || true
-            cp -R ./reports/* consolidated_reports/ 2>/dev/null || true
+            cp -a "./reports/." reports_publish/ || true
           fi
-          # copy reports from services into consolidated_reports/<service-name>/
+
           for svc in services/*; do
+            svcname=$(basename "$svc")
             if [ -d "$svc/reports" ]; then
-              svcname=$(basename "$svc")
-              mkdir -p "consolidated_reports/$svcname"
-              cp -R "$svc/reports/"* "consolidated_reports/$svcname/" 2>/dev/null || true
+              mkdir -p "reports_publish/$svcname"
+              cp -a "$svc/reports/." "reports_publish/$svcname/" || true
             fi
           done
-          # if there is nothing, create a small index to show no reports found
-          mkdir -p reports_publish
-          if [ "$(ls -A consolidated_reports 2>/dev/null || true)" != "" ]; then
-            cp -R consolidated_reports/* reports_publish/ || true
-          else
+
+          if [ -z "$(ls -A reports_publish 2>/dev/null || true)" ]; then
             echo "<html><body><h1>No reports generated</h1></body></html>" > reports_publish/index.html
+            exit 0
           fi
+
+          cat > reports_publish/index.html <<'HTML'
+          <!doctype html>
+          <html>
+          <head><meta charset="utf-8"><title>Test Reports</title></head>
+          <body>
+          <h1>Test Reports</h1>
+          <ul>
+          HTML
+
+          for d in reports_publish/*; do
+            [ -d "$d" ] || continue
+            svcname=$(basename "$d")
+            idx=$(find "$d" -type f -name index.html | head -n 1 || true)
+            if [ -n "$idx" ]; then
+              # make path relative to reports_publish root
+              rel="${idx#reports_publish/}"
+              echo "  <li><a href=\"./$rel\">$svcname — report</a></li>" >> reports_publish/index.html
+            fi
+          done
+
+          cat >> reports_publish/index.html <<'HTML'
+          </ul>
+          <p>Published by CI at: '"$(date -u)"'</p>
+          </body></html>
+          HTML
 
       - name: Upload test reports artifact
         uses: actions/upload-artifact@v4
@@ -122,6 +147,6 @@ jobs:
       - name: Deploy reports to GitHub Pages (gh-pages)
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.GH_PAGES_PAT }}
+          github_token: ${{ secrets.GH_TOKEN }}
           publish_dir: ./reports_publish
           publish_branch: gh-pages
