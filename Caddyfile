@@ -25,6 +25,15 @@ mytodotasks.duckdns.org {
     @cors_preflight method OPTIONS
     respond @cors_preflight 200
     
+    handle_path /auth/docs* {
+        uri strip_prefix /auth
+        reverse_proxy user-service:3001
+    }   
+    
+    handle_path /todos/docs* {
+        uri strip_prefix /todos
+        reverse_proxy user-service:3002
+    }   
 
     handle /auth* {
         reverse_proxy user-service:3001
@@ -35,14 +44,6 @@ mytodotasks.duckdns.org {
         reverse_proxy todo-service:3002
     }
     
-    # Documentation routes
-    handle /auth/docs* {
-        reverse_proxy user-service:3001/docs
-    }
-
-    handle /todos/docs* {
-        reverse_proxy todo-service:3002/docs
-    }
     
     handle {
         respond "Task Microservices API Ready" 200
