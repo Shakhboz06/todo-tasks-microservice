@@ -134,7 +134,6 @@ jobs:
 
           cat >> reports_publish/index.html <<'HTML'
           </ul>
-          <p>Published by CI at: '"$(date -u)"'</p>
           </body></html>
           HTML
 
