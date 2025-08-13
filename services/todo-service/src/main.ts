@@ -24,7 +24,7 @@ function buildCorsOptions() {
 		},
 		methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
 		allowedHeaders: ["Content-Type", "Authorization"],
-		credentials: false, // token in header; no cookies
+		credentials: false,
 		preflightContinue: false,
 		optionsSuccessStatus: 204,
 	} as const;
