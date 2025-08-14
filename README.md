@@ -133,7 +133,6 @@ cd todo-tasks-microservice
 1. create .env file in services/user-service folder with the following contents:
 
 DATABASE_USER_URL=postgresql://postgres:secretpass@user-db:5432/users
-DATABASE_TASKS_URL=postgresql://postgres:secretpass@todo-db:5432/tasks
 JWT_SECRET='therecanbeanysecretstaffforjwt28398088329729798274294842'
 JWT_EXPIRES_IN=900s
 PORT=3001
@@ -145,7 +144,7 @@ DATABASE_TASKS_URL=postgresql://postgres:secretpass@todo-db:5432/tasks
 JWT_SECRET='therecanbeanysecretstaffforjwt28398088329729798274294842'
 JWT_EXPIRES_IN=900s
 PORT=3002
-ALLOWED_ORIGINS=http://localhost:3001,http://localhost:5173
+ALLOWED_ORIGINS=http://localhost:3002,http://localhost:5173
 
 # Start all services
 docker compose up -d --build
@@ -351,10 +350,10 @@ DATABASE_TASKS_URL="postgresql://postgres:secretpass@todo-db:5432/tasks"
 
 # JWT configuration
 JWT_SECRET="your-dev-secret-key"
-JWT_EXPIRES_IN="1200s"
+JWT_EXPIRES_IN="900s"
 
 # CORS
-ALLOWED_ORIGINS="http://localhost:5173,http://localhost:3000"
+ALLOWED_ORIGINS="http://localhost:5173"
 
 # Environment
 NODE_ENV="development"
@@ -368,7 +367,7 @@ DATABASE_TASKS_URL="postgresql://user:pass@host:6543/tasks?sslmode=require"
 
 # Production settings
 JWT_SECRET="strong-production-secret"
-JWT_EXPIRES_IN="1200s"
+JWT_EXPIRES_IN="900s"
 ALLOWED_ORIGINS=origins
 NODE_ENV="production"
 ```
