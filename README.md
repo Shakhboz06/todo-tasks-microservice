@@ -171,9 +171,9 @@ docker compose up -d
 npx prisma generate --schema services/user-service/prisma/schema.prisma
 npx prisma generate --schema services/todo-service/prisma/schema.prisma
 
-# 5. Run migrations
-npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
-npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
+# 5. Run migrations(inside docker)
+docker exec -it todo-service npx prisma migrate deploy
+docker exec -it user-service npx prisma migrate deploy
 
 # 6. Build shared libraries
 npm run -w @backendrestapi/jwt build
