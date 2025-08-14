@@ -146,12 +146,10 @@ JWT_EXPIRES_IN=900s
 PORT=3002
 ALLOWED_ORIGINS=http://localhost:3002,http://localhost:5173
 
-#3.create for frontend .env file in /frontend folder with the following contents:
+# 3.create for frontend .env file in /frontend folder with the following contents:
 
 VITE_AUTH_BASE_URL=http://localhost:3001
 VITE_TODOS_BASE_URL=http://localhost:3002
-VITE_AUTH_BASE_URL=/api-auth
-VITE_TODOS_BASE_URL=/api-todos
 
 # install dependencies run
 npm ci
