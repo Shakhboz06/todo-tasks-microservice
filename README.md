@@ -164,37 +164,6 @@ docker compose exec todo-service npx prisma migrate deploy --schema services/tod
 - Docker & Docker Compose
 - Git
 
-### **Development Setup**
-```bash
-# 1. Install dependencies
-npm ci
-
-# 2. Set environment variables
-DATABASE_USER_URL="postgresql://postgres:secretpass@localhost:5432/users"
-DATABASE_TASKS_URL="postgresql://postgres:secretpass@localhost:5433/tasks"
-JWT_SECRET="your-secret-key-here"
-JWT_EXPIRES_IN="1200s"
-ALLOWED_ORIGINS="http://localhost:5173"
-
-# 3. Start databases only
-docker compose up -d
-
-# 4. Generate Prisma clients
-npx prisma generate --schema services/user-service/prisma/schema.prisma
-npx prisma generate --schema services/todo-service/prisma/schema.prisma
-
-# 5. Run migrations(inside docker)
-docker exec -it todo-service npx prisma migrate deploy
-docker exec -it user-service npx prisma migrate deploy
-
-# 6. Build shared libraries
-npm run -w @backendrestapi/jwt build
-
-# Access the application
-# Frontend: http://localhost:5173
-# API Docs: http://localhost:3001/docs (user-service)
-# API Docs: http://localhost:3002/docs (todo-service)
-
 ```
 
 ### **Useful Commands**
