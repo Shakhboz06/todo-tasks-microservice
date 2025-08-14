@@ -26,8 +26,8 @@
 
 ## 🚀 Live Demo
 
-| Service | URL | Status |
-|---------|-----|---------|
+| Service | URL | 
+|---------|-----|
 | **Frontend** | [todo-tasks-one.vercel.app](https://todo-tasks-one.vercel.app) |
 | **User Service Docs** | [mytodotasks.duckdns.org/auth/docs](https://mytodotasks.duckdns.org/auth/docs) |
 | **Todo Service Docs** | [mytodotasks.duckdns.org/todos/docs](https://mytodotasks.duckdns.org/todos/docs) |
