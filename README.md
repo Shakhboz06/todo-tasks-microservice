@@ -151,11 +151,11 @@ ALLOWED_ORIGINS=http://localhost:3002,http://localhost:5173
 VITE_AUTH_BASE_URL=http://localhost:3001
 VITE_TODOS_BASE_URL=http://localhost:3002
 
-# install dependencies run
-npm ci
+# Building all services
+docker compose build
 
 # Start all services
-docker compose up -d --build
+docker compose up -d
 
 # Generate Prisma clients
 npx prisma generate --schema services/user-service/prisma/schema.prisma
