@@ -374,5 +374,4 @@ NODE_ENV="production"
 5. Execute test suites (unit + e2e)
 6. Generate HTML test reports
 7. Deploy reports to GitHub Pages
-8. Cleanup old deployments
 ---
