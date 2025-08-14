@@ -130,7 +130,7 @@ git clone https://github.com/Shakhboz06/todo-tasks-microservice.git
 cd todo-tasks-microservice
 
 # Copy environment variables
-1. create .env file in services/user-service folder with the following contents:
+# 1.create .env file in services/user-service folder with the following contents:
 
 DATABASE_USER_URL=postgresql://postgres:secretpass@user-db:5432/users
 JWT_SECRET='therecanbeanysecretstaffforjwt28398088329729798274294842'
@@ -138,7 +138,7 @@ JWT_EXPIRES_IN=900s
 PORT=3001
 ALLOWED_ORIGINS=http://localhost:3001,http://localhost:5173
 
-2. create .env file in services/todo-service folder with the following contents:
+# 2.create .env file in services/todo-service folder with the following contents:
 
 DATABASE_TASKS_URL=postgresql://postgres:secretpass@todo-db:5432/tasks
 JWT_SECRET='therecanbeanysecretstaffforjwt28398088329729798274294842'
@@ -146,7 +146,7 @@ JWT_EXPIRES_IN=900s
 PORT=3002
 ALLOWED_ORIGINS=http://localhost:3002,http://localhost:5173
 
-3. create for frontend .env file in /frontend folder with the following contents:
+#3.create for frontend .env file in /frontend folder with the following contents:
 
 VITE_AUTH_BASE_URL=http://localhost:3001
 VITE_TODOS_BASE_URL=http://localhost:3002
