@@ -145,7 +145,7 @@ docker compose exec todo-service npx prisma migrate deploy --schema services/tod
 # API Docs: http://localhost:3002/docs (todo-service)
 ```
 
-## 🔧 Local Development
+### 🚀 **Run Locally (Docker)**
 
 ### **Prerequisites**
 - Node.js 20+
@@ -178,9 +178,11 @@ docker exec -it user-service npx prisma migrate deploy
 # 6. Build shared libraries
 npm run -w @backendrestapi/jwt build
 
-# 7. Start services in development mode
-npm run -w user-service start:dev
-npm run -w todo-service start:dev
+# Access the application
+# Frontend: http://localhost:5173
+# API Docs: http://localhost:3001/docs (user-service)
+# API Docs: http://localhost:3002/docs (todo-service)
+
 ```
 
 ### **Useful Commands**
