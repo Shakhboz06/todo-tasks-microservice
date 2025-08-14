@@ -154,8 +154,8 @@ npx prisma generate --schema services/user-service/prisma/schema.prisma
 npx prisma generate --schema services/todo-service/prisma/schema.prisma
 
 # Run database migrations
-docker compose exec user-service npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
-docker compose exec todo-service npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
+docker compose exec user-service npx prisma migrate deploy
+docker compose exec todo-service npx prisma migrate deploy
 
 # Access the application
 # Frontend: http://localhost:5173
