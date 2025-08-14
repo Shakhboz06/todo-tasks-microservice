@@ -42,7 +42,7 @@
 - Token expiration handling
 
 ### 🔒 Abuse Protection & Rate Limiting
-- **Rate Limiting:** using [`@nestjs/throttler`](https://docs.nestjs.com/security/rate-limiting) to protect API endpoints from abuse.
+- **Rate Limiting:** using @nestjs/throttler to protect API endpoints from abuse.
 - **Limit:** 50 requests per minute per client
 - **Scope:** Applied globally to all endpoints
 - **Implementation:** Enforced via `ThrottlerGuard`, tracking requests per IP address
