@@ -149,6 +149,10 @@ ALLOWED_ORIGINS=http://localhost:3002,http://localhost:5173
 # Start all services
 docker compose up -d --build
 
+# Generate Prisma clients
+npx prisma generate --schema services/user-service/prisma/schema.prisma
+npx prisma generate --schema services/todo-service/prisma/schema.prisma
+
 # Run database migrations
 docker compose exec user-service npx prisma migrate deploy --schema services/user-service/prisma/schema.prisma
 docker compose exec todo-service npx prisma migrate deploy --schema services/todo-service/prisma/schema.prisma
