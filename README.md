@@ -28,10 +28,10 @@
 
 | Service | URL | Status |
 |---------|-----|---------|
-| **Frontend** | [todo-tasks-one.vercel.app](https://todo-tasks-one.vercel.app) | ✅ Live |
-| **User Service Docs** | [mytodotasks.duckdns.org/auth/docs](https://mytodotasks.duckdns.org/auth/docs) | ✅ Live |
-| **Todo Service Docs** | [mytodotasks.duckdns.org/todos/docs](https://mytodotasks.duckdns.org/todos/docs) | ✅ Live |
-| **Test Reports** | [shakhboz06.github.io/todo-tasks-microservice](https://shakhboz06.github.io/todo-tasks-microservice) | ✅ Live |
+| **Frontend** | [todo-tasks-one.vercel.app](https://todo-tasks-one.vercel.app) |
+| **User Service Docs** | [mytodotasks.duckdns.org/auth/docs](https://mytodotasks.duckdns.org/auth/docs) |
+| **Todo Service Docs** | [mytodotasks.duckdns.org/todos/docs](https://mytodotasks.duckdns.org/todos/docs) |
+| **Test Reports** | [shakhboz06.github.io/todo-tasks-microservice](https://shakhboz06.github.io/todo-tasks-microservice) |
 
 ## ✨ Features
 
