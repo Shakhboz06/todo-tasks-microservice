@@ -145,8 +145,6 @@ docker compose exec todo-service npx prisma migrate deploy --schema services/tod
 # API Docs: http://localhost:3002/docs (todo-service)
 ```
 
-### 🚀 **Run Locally (Docker)**
-
 ### **Prerequisites**
 - Node.js 20+
 - Docker & Docker Compose
